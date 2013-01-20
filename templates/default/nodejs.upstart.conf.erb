@@ -1,0 +1,19 @@
+#!upstart
+description "Node.js Application Server"
+
+start on (local-filesystems and net-device-up IFACE!=lo)
+stop on [!12345]
+
+console log
+
+<% @environment.each do |key, value| -%>
+env <%= key %>="<%= value %>"
+<% end -%>
+<% unless @user.nil? -%>
+setuid <%= @user %>
+<% end -%>
+<% unless @group.nil? -%>
+setuid <%= @group %>
+<% end -%>
+chdir <%= @app_dir %>
+exec <%= @node_dir %>/bin/node <%= @entry %>
