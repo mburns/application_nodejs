@@ -59,7 +59,7 @@ action :before_migrate do
       cwd new_resource.release_path
       user new_resource.owner
       group new_resource.group
-      environment new_resource.environment.merge({ 'HOME' => new_resource.path })
+      environment new_resource.environment.merge({ 'HOME' => new_resource.shared_path })
     end
   end
 
