@@ -13,7 +13,7 @@ env <%= key %>="<%= value %>"
 setuid <%= @user %>
 <% end -%>
 <% unless @group.nil? -%>
-setuid <%= @group %>
+setgid <%= @group %>
 <% end -%>
 chdir <%= @app_dir %>
 exec <%= @node_dir %>/bin/node <%= @entry %>
