@@ -7,3 +7,5 @@ version          "1.0.0"
 
 depends          "nodejs"
 depends          "application"
+
+supports 'ubuntu', ">= 12.04"
