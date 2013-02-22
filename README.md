@@ -13,8 +13,8 @@ This requirement can be worked around by specifying a custom template.
 
 The following Opscode cookbooks are dependencies:
 
-* application
-* nodejs
+* [application](https://github.com/opscode-cookbooks/application)
+* [nodejs](https://github.com/mdxp/nodejs-cookbook)
 
 ## Resources/Providers
 
