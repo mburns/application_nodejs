@@ -35,7 +35,8 @@ application "hello-world" do
   path "/srv/node-hello-world"
   owner "www-data"
   group "www-data"
-  
+  packages ["git"]
+
   repository "git://github.com/visionmedia/express.git"
   
   nodejs do
