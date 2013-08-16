@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-include Chef::Resource::ApplicationBase
+include ApplicationCookbook::ResourceBase
 
 attribute :npm, :kind_of => [NilClass, TrueClass, FalseClass], :default => true
 attribute :template, :kind_of => [String, NilClass], :default => nil
