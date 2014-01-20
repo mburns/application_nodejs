@@ -73,7 +73,7 @@ action :before_restart do
   template "#{new_resource.application.name}.upstart.conf" do
     path "/etc/init/#{new_resource.application.name}_nodejs.conf"
     source new_resource.template ? new_resource.template : 'nodejs.upstart.conf.erb'
-    cookbook new_resource.template ? new_resource.cookbook_name : 'application_nodejs'
+    cookbook new_resource.template ? new_resource.cookbook_name.to_s : 'application_nodejs'
     owner 'root'
     group 'root'
     mode '0644'
