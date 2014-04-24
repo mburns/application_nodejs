@@ -21,9 +21,15 @@
 include Chef::DSL::IncludeRecipe
 
 action :before_compile do
-  include_recipe 'nodejs::nodejs_from_source'
+  include_recipe 'nodejs::install'
 
-  include_recipe 'nodejs::install' # let the nodejs cookbook do the install based on attribute precedence
+  include_recipe 'nodejs::npm' if new_resource.npm
+
+  service_name = if new_resource.service_name.nil?
+                   new_resource.application.name
+                 else
+                   new_resource.service_name
+                 end
 
   r = new_resource
   unless r.restart_command
