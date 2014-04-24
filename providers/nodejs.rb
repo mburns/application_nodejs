@@ -70,6 +70,8 @@ end
 
 action :before_restart do
 
+  node_binary = ::File.join(node['nodejs']['dir'], 'bin', 'node')
+
   template "#{new_resource.application.name}.upstart.conf" do
     path "/etc/init/#{new_resource.application.name}_nodejs.conf"
     source new_resource.template ? new_resource.template : 'nodejs.upstart.conf.erb'
@@ -80,7 +82,7 @@ action :before_restart do
     variables(
       :user => new_resource.owner,
       :group => new_resource.group,
-      :node_dir => node['nodejs']['dir'],
+      :node_binary => node_binary,
       :app_dir => new_resource.release_path,
       :entry => new_resource.entry_point,
       :environment => new_resource.environment
