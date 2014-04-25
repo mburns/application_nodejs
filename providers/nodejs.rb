@@ -31,7 +31,11 @@ action :before_compile do
                    new_resource.service_name
                  end
 
-  app_name = new_resource.application.name
+  service_name = if new_resource.service_name.nil?
+                   new_resource.application.name
+                 else
+                   new_resource.service_name
+                 end
 
   r = new_resource
   unless r.restart_command
