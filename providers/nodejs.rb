@@ -31,10 +31,12 @@ action :before_compile do
                    new_resource.service_name
                  end
 
+  app_name = new_resource.application.name
+
   r = new_resource
   unless r.restart_command
     r.restart_command do
-      service "#{r.application.name}_nodejs" do
+      service "#{service_name}_nodejs" do
         provider Chef::Provider::Service::Upstart
         supports restart: true, start: true, stop: true
         action [:enable, :restart]
@@ -69,8 +71,14 @@ end
 action :before_restart do
   node_binary = ::File.join(node['nodejs']['dir'], 'bin', 'node')
 
-  template "#{new_resource.application.name}.upstart.conf" do
-    path "/etc/init/#{new_resource.application.name}_nodejs.conf"
+  service_name = if new_resource.service_name.nil?
+                   new_resource.application.name
+                 else
+                   new_resource.service_name
+                 end
+
+  template "#{service_name}.upstart.conf" do
+    path "/etc/init/#{service_name}_nodejs.conf"
     source new_resource.template ? new_resource.template : 'nodejs.upstart.conf.erb'
     cookbook new_resource.template ? new_resource.cookbook_name.to_s : 'application_nodejs'
     owner 'root'
