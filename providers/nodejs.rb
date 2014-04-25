@@ -28,10 +28,12 @@ action :before_compile do
     include_recipe 'nodejs::npm'
   end
 
+  app_name = new_resource.application.name
+
   unless new_resource.restart_command
     new_resource.restart_command do
 
-      service "#{new_resource.application.name}_nodejs" do
+      service "#{app_name}_nodejs" do
         provider Chef::Provider::Service::Upstart
         supports :restart => true, :start => true, :stop => true
         action [:enable, :restart]
