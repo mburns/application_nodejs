@@ -1,3 +1,4 @@
+name             "application_nodejs"
 maintainer       "Conrad Kramer"
 maintainer_email "conrad@kramerapps.com"
 license          "Apache 2.0"
