@@ -8,5 +8,5 @@ version          "2.0.1"
 
 depends          "nodejs"
 depends          "application"
-
+depends 'runit'
 supports 'ubuntu', ">= 12.04"
