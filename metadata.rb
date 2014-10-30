@@ -9,4 +9,6 @@ version          "2.0.1"
 depends          "nodejs"
 depends          "application"
 depends 'runit'
+depends 'apache2'
+depends 'passenger_apache2'
 supports 'ubuntu', ">= 12.04"
