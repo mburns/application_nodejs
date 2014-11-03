@@ -19,6 +19,7 @@
 
 include ApplicationCookbook::ResourceBase
 attribute :npm, :kind_of => [NilClass, TrueClass, FalseClass], :default => true
+attribute :server_name, :kind_of => [String, NilClass], :default => nil
 attribute :server_aliases, :kind_of => [Array, NilClass], :default => nil
 # Actually defaults to "#{application.name}.conf.erb", but nil means it wasn't set by the user
 attribute :webapp_template, :kind_of => [String, NilClass], :default => nil
