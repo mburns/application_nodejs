@@ -1,0 +1,26 @@
+server {
+    listen   <%= @params[:listen] || '3000' %>;
+    server_name  <%= @params[:server_name] %>;
+    root <%= @params[:docroot] %>;
+    
+    passenger_enabled on;
+    passenger_app_type node;
+    passenger_app_root <%= @params[:app_root] %>;
+    passenger_startup_file <%= @params[:entry_point] %>;
+    passenger_sticky_sessions on;
+    passenger_min_instances 3;
+    passenger_max_preloader_idle_time 0;
+    
+    
+    passenger_pre_start http://<%= @params[:server_name] %>:<%= @params[:listen] || '3000' %>/;
+
+    <% @params[:extra][:config].each do |key,val| %>
+    passenger_set_cgi_param <%= key %> <%= val %>
+    <% end -%>
+    
+    passenger_log_level 3;
+    passenger_debug_log_file /var/log/nginx/<%= @params[:entry_point] %>.debug.log;
+    access_log  /var/log/nginx/<%= @params[:entry_point] %>.access.log;
+
+
+}
