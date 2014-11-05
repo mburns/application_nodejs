@@ -21,10 +21,9 @@
 include Chef::DSL::IncludeRecipe
 
 action :before_compile do
-  include_recipe 'apache2'
-  include_recipe 'apache2::mod_ssl'
-  include_recipe 'apache2::mod_rewrite'
-  include_recipe 'passenger_apache2'
+  include_recipe 'nginx::source'
+  include_recipe 'nginx::http_ssl_module'
+  include_recipe 'nginx::passenger'
   include_recipe 'nodejs::nodejs_from_source'
 
   include_recipe 'nodejs::npm' if new_resource.npm
@@ -55,21 +54,17 @@ action :before_deploy do
     server_name = new_resource.server_name
   end
 
-  web_app "#{new_resource.application.name}-#{new_resource.entry_point}" do
-    docroot "#{new_resource.application.path}/current/public"
-    template new_resource.webapp_template || "#{new_resource.application.name}.conf.erb"
-    cookbook new_resource.cookbook_name.to_s
-    server_name server_name
-    server_aliases new_resource.server_aliases
-    log_dir node['apache']['log_dir']
-    node_env new_resource.application.environment_name
-    entry_point new_resource.entry_point
-    app_root "#{new_resource.application.path}/current"
-    extra new_resource.params
-  end
-
-  apache_site '000-default' do
-    enable false
+  template "#{node['nginx']['dir']}/sites-enabled/#{new_resource.application.name}-#{new_resource.entry_point}" do
+    source new_resource.webapp_template || "#{new_resource.application.name}.erb"
+    variables(params: {
+                server_name: server_name,
+                docroot: "#{new_resource.application.path}/current/public",
+                server_aliases: new_resource.server_aliases,
+                node_env: new_resource.application.environment_name,
+                entry_point: new_resource.entry_point,
+                app_root: "#{new_resource.application.path}/current",
+                extra: new_resource.params
+              })
   end
 end
 
