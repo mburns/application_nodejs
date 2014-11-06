@@ -62,7 +62,7 @@ action :before_deploy do
     serverName = new_resource.server_name
   end
 
-  template "#{node['nginx']['dir']}/sites-enabled/#{new_resource.application.name}-#{new_resource.entry_point}" do
+  template "#{node['nginx']['dir']}/sites-available/#{new_resource.application.name}-#{new_resource.entry_point}" do
     source new_resource.webapp_template || "#{new_resource.application.name}.erb"
     variables({
                 :params => {
@@ -75,6 +75,13 @@ action :before_deploy do
                   :extra => new_resource.params
                 }
               })
+  end
+
+  nginx_site "#{new_resource.application.name}-#{new_resource.entry_point}" do
+    enable true
+  end
+  nginx_site "000-default" do
+    enable false
   end
 
   # web_app "#{new_resource.application.name}-#{new_resource.entry_point}" do
