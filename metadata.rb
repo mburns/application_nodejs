@@ -1,10 +1,10 @@
 name             "application_nodejs"
-maintainer       "Conrad Kramer"
-maintainer_email "conrad@kramerapps.com"
+maintainer       "Jake Plimack"
+maintainer_email "jake@jakeplimack.com"
 license          "Apache 2.0"
 description      "Deploys and configures Node.js applications"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "2.0.1"
+version          "3.0.1"
 
 depends 'nodejs'
 depends 'application'
