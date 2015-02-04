@@ -80,7 +80,7 @@ action :before_restart do
     variables(
       :user => new_resource.owner,
       :group => new_resource.group,
-      :node_dir => node['nodejs']['dir'],
+      :node_dir => "/usr/local",
       :app_dir => new_resource.release_path,
       :entry => new_resource.entry_point,
       :environment => new_resource.environment
