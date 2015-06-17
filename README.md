@@ -14,7 +14,7 @@ This requirement can be worked around by specifying a custom template.
 The following Opscode cookbooks are dependencies:
 
 * [application](https://github.com/opscode-cookbooks/application)
-* [nodejs](https://github.com/mdxp/nodejs-cookbook)
+* [nodejs](https://github.com/redguide/nodejs)
 
 ## Resources/Providers
 
@@ -38,7 +38,7 @@ application "hello-world" do
   packages ["git"]
 
   repository "git://github.com/visionmedia/express.git"
-  
+
   nodejs do
     entry_point "examples/hello-world"
   end
