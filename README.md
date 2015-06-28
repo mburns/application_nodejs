@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/mburns/application_nodejs.svg?branch=master)](https://travis-ci.org/mburns/application_nodejs)
+[![Chef cookbook](https://img.shields.io/cookbook/v/application_nodejs.svg)](https://supermarket.chef.io/cookbooks/application_nodejs)
+
 ## Description
 
 This cookbook is designed to be able to describe and deploy Node.js web applications using Upstart.
