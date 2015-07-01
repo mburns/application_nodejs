@@ -51,6 +51,7 @@ end
 ## License and Author
 
 Author:: Michael Burns (<michael@mirwin.net>)
+
 Author:: Conrad Kramer (<conrad@kramerapps.com>)
 
 Copyright 2013, Kramer Software Productions, LLC.
