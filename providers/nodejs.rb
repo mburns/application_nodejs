@@ -23,8 +23,10 @@ include Chef::DSL::IncludeRecipe
 action :before_compile do
   include_recipe 'nodejs::nodejs_from_source'
 
+  # install Node.js
   include_recipe 'nodejs::npm' if new_resource.npm
 
+  # restart service(s)
   r = new_resource
   unless r.restart_command
     r.restart_command do
@@ -41,6 +43,13 @@ action :before_compile do
 end
 
 action :before_deploy do
+  ark "#{r.application.name}_source" do
+    only_if new_resource.url
+    checksum new_resource.checksum
+    url new_resource.url
+    action :put
+  end
+
   new_resource.environment['NODE_ENV'] = new_resource.environment_name
   new_resource.updated_by_last_action(true)
 end
