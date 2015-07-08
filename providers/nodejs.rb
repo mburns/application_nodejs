@@ -37,10 +37,12 @@ action :before_compile do
   end
 
   new_resource.environment.update('NODE_ENV' => new_resource.environment_name)
+  new_resource.updated_by_last_action(true)
 end
 
 action :before_deploy do
   new_resource.environment['NODE_ENV'] = new_resource.environment_name
+  new_resource.updated_by_last_action(true)
 end
 
 action :before_migrate do
@@ -51,9 +53,11 @@ action :before_migrate do
     only_if new_resource.npm
     environment new_resource.environment.merge('HOME' => new_resource.shared_path)
   end
+  new_resource.updated_by_last_action(true)
 end
 
 action :before_symlink do
+  new_resource.updated_by_last_action(true)
 end
 
 action :before_restart do
@@ -73,7 +77,9 @@ action :before_restart do
       environment: new_resource.environment
     )
   end
+  new_resource.updated_by_last_action(true)
 end
 
 action :after_restart do
+  new_resource.updated_by_last_action(true)
 end
