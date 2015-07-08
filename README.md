@@ -28,7 +28,7 @@ The `nodejs` sub-resource LWRP deals with deploying Node.js applications using U
 - **npm**: If `true`, `npm` will be used to install the dependencies specified in `packages.json`. Defaults to `true`.
 - **template**: The name of the template that will be used to create the Upstart configuration file. If specified, it will be looked up in the application cookbook. Defaults to `nodejs.upstart.conf.erb` from this cookbook.
 - **entry_point**: The argument to pass to node. Defaults to `app.js`.
-
+- **url**: The URL to download a tarball (tar.gz, zip) of your application's source code.
 ## Usage
 
 Here is an example hello world application using [Express](http://expressjs.com):
@@ -54,7 +54,7 @@ Author:: Michael Burns (<michael@mirwin.net>)
 
 Author:: Conrad Kramer (<conrad@kramerapps.com>)
 
-Copyright 2013, Kramer Software Productions, LLC.
+Copyright 2013, Kramer Software Productions, LLC.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
