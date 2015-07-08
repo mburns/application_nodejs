@@ -9,6 +9,6 @@ source_url 'https://github.com/mburns/application_nodejs' if respond_to?(:source
 issues_url 'https://github.com/mburns/application_nodejs/issues' if respond_to?(:issues_url)
 
 depends 'nodejs'
-depends 'application', '~> 3'
+depends 'application'
 
 supports 'ubuntu', '>= 12.04'
