@@ -27,8 +27,22 @@ end
 desc 'Run all style checks'
 task style: ['style:chef', 'style:ruby']
 
+desc 'Run Chefspec unit tests'
+task :unit do
+  sh "bundle exec 'rspec ./test/unit/spec/ --color --format documentation'"
+end
+
+desc 'Run Test Kitchen integration tests'
+task :integration do
+  require 'kitchen'
+  Kitchen.logger = Kitchen.default_file_logger
+  Kitchen::Config.new.instances.each do |instance|
+    instance.test(:always)
+  end
+end
+
 desc 'Run all tests on Travis'
-task travis: ['style']
+task travis: %w(style unit)
 
 # Default
-task default: ['style']
+task default: %w(style unit integration)
