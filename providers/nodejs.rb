@@ -22,14 +22,7 @@ include Chef::DSL::IncludeRecipe
 
 action :before_compile do
   include_recipe 'nodejs::install'
-
   include_recipe 'nodejs::npm' if new_resource.npm
-
-  service_name = if new_resource.service_name.nil?
-                   new_resource.application.name
-                 else
-                   new_resource.service_name
-                 end
 
   service_name = if new_resource.service_name.nil?
                    new_resource.application.name
@@ -40,9 +33,7 @@ action :before_compile do
   r = new_resource
   unless r.restart_command
     r.restart_command do
-      service "#{service_name}_nodejs" do
-        provider Chef::Provider::Service::Upstart
-        supports restart: true, start: true, stop: true
+      poise_service "#{service_name}_nodejs" do
         action [:enable, :restart]
       end
     end
@@ -81,21 +72,12 @@ action :before_restart do
                    new_resource.service_name
                  end
 
-  template "#{service_name}.upstart.conf" do
-    path "/etc/init/#{service_name}_nodejs.conf"
-    source new_resource.template ? new_resource.template : 'nodejs.upstart.conf.erb'
-    cookbook new_resource.template ? new_resource.cookbook_name.to_s : 'application_nodejs'
-    owner 'root'
-    group 'root'
-    mode '0644'
-    variables(
-      user: new_resource.owner,
-      group: new_resource.group,
-      node_binary: node_binary,
-      app_dir: ::File.join(new_resource.path, 'current'),
-      entry: new_resource.entry_point,
-      environment: new_resource.environment
-    )
+  poise_service "#{service_name}_nodejs" do
+    user new_resource.owner
+    group new_resource.group
+    command "#{node_binary} #{new_resource.entry_point}"
+    directory ::File.join(new_resource.path, 'current')
+    environment new_resource.environment
   end
   new_resource.updated_by_last_action(true)
 end
