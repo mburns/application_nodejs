@@ -21,14 +21,26 @@
 include Chef::DSL::IncludeRecipe
 
 action :before_compile do
-  include_recipe 'nodejs::nodejs_from_source'
+  include_recipe 'nodejs::install'
 
-  include_recipe 'nodejs::install' # let the nodejs cookbook do the install based on attribute precedence
+  include_recipe 'nodejs::npm' if new_resource.npm
+
+  service_name = if new_resource.service_name.nil?
+                   new_resource.application.name
+                 else
+                   new_resource.service_name
+                 end
+
+  service_name = if new_resource.service_name.nil?
+                   new_resource.application.name
+                 else
+                   new_resource.service_name
+                 end
 
   r = new_resource
   unless r.restart_command
     r.restart_command do
-      service "#{r.application.name}_nodejs" do
+      service "#{service_name}_nodejs" do
         provider Chef::Provider::Service::Upstart
         supports restart: true, start: true, stop: true
         action [:enable, :restart]
@@ -61,8 +73,16 @@ action :before_symlink do
 end
 
 action :before_restart do
-  template "#{new_resource.application.name}.upstart.conf" do
-    path "/etc/init/#{new_resource.application.name}_nodejs.conf"
+  node_binary = ::File.join(node['nodejs']['dir'], 'bin', 'node')
+
+  service_name = if new_resource.service_name.nil?
+                   new_resource.application.name
+                 else
+                   new_resource.service_name
+                 end
+
+  template "#{service_name}.upstart.conf" do
+    path "/etc/init/#{service_name}_nodejs.conf"
     source new_resource.template ? new_resource.template : 'nodejs.upstart.conf.erb'
     cookbook new_resource.template ? new_resource.cookbook_name.to_s : 'application_nodejs'
     owner 'root'
@@ -71,8 +91,8 @@ action :before_restart do
     variables(
       user: new_resource.owner,
       group: new_resource.group,
-      node_dir: '/usr/local',
-      app_dir: new_resource.release_path,
+      node_binary: node_binary,
+      app_dir: ::File.join(new_resource.path, 'current'),
       entry: new_resource.entry_point,
       environment: new_resource.environment
     )
