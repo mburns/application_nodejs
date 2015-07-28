@@ -9,6 +9,7 @@ source_url 'https://github.com/mburns/application_nodejs' if respond_to?(:source
 issues_url 'https://github.com/mburns/application_nodejs/issues' if respond_to?(:issues_url)
 
 depends 'nodejs'
-depends 'application'
+depends 'application', '~> 4.0'
+depends 'poise-service'
 
 supports 'ubuntu', '>= 12.04'

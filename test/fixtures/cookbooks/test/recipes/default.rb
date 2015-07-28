@@ -13,7 +13,7 @@ application 'hello-world' do
 
   repository 'https://github.com/strongloop/express'
 
-  nodejs do
+  nodejs 'hello-world' do
     entry_point 'examples/hello-world'
   end
 end
