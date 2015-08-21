@@ -9,7 +9,7 @@ Note that this cookbook provides the Node-specific bindings for the `application
 
 ## Requirements
 
-Chef 0.10.0 or higher required (for Chef environment use).
+Chef 0.12.0 or higher required (for Chef environment use).
 
 Upstart 1.4 or higher for the use of `setuid` in the default Upstart configuration template.
 This requirement can be worked around by specifying a custom template.
