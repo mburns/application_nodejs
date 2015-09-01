@@ -1,0 +1,14 @@
+#!upstart
+description "Node.js Application Server"
+
+start on (local-filesystems and net-device-up IFACE!=lo)
+stop on [!12345]
+
+<% if @user.nil? && @group.nil? %>
+exec "<% @environment.each do |key, value| -%><%= key %>=<%= value %> <% end -%><%= @node_binary %> <%= @entry %>"
+<% else -%>
+exec su -c "<% @environment.each do |key, value| -%><%= key %>=<%= value %> <% end -%><%= @node_binary %> <%= @entry %>" -s /bin/bash <%= @user %>
+<% end -%>
+
+chdir <%= @app_dir %>
+
