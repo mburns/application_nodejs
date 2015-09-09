@@ -20,7 +20,7 @@
 
 include Chef::DSL::IncludeRecipe
 
-action :before_compiile do
+action :before_compile do
   new_resource.updated_by_last_action(true)
 end
 
