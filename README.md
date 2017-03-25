@@ -18,16 +18,21 @@ The following Opscode cookbooks are dependencies:
 
 * [application](https://github.com/opscode-cookbooks/application)
 * [nodejs](https://github.com/redguide/nodejs)
+* [nginx](https://github.com/miketheman/nginx)
 
 ## Resources/Providers
 
 The `nodejs` sub-resource LWRP deals with deploying Node.js applications using Upstart. It is not meant to be used by itself; make sure you are familiar with the `application` cookbook before proceeding.
+
+The `passenger_nginx` sub-resource LWRP deploys nginx with passenger (for all you websocket users).
+The `passenger_apache2` sub-resource LWRP deploys apache2 with passenger.
 
 ### Attribute Parameters
 
 - **npm**: If `true`, `npm` will be used to install the dependencies specified in `packages.json`. Defaults to `true`.
 - **template**: The name of the template that will be used to create the Upstart configuration file. If specified, it will be looked up in the application cookbook. Defaults to `nodejs.upstart.conf.erb` from this cookbook.
 - **entry_point**: The argument to pass to node. Defaults to `app.js`.
+- **params**: Hash of ENV Variables to be rendered as `passenger_set_cgi_param KEY VALUE`
 
 ## Usage
 
@@ -45,6 +50,20 @@ application "hello-world" do
   nodejs do
     entry_point "examples/hello-world"
   end
+
+  passenger_nginx do
+    npm true
+    entry_point 'cluster.js'
+    server_name "cluster-#{node.chef_environment}"
+    params :config => config
+  end
+
+  passenger_apache2 do
+    npm true
+    entry_point 'cluster.js'
+    server_name "cluster-#{node.chef_environment}"
+    params :config => config
+  end
 end
 ```
 
@@ -54,7 +73,13 @@ Author:: Michael Burns (<michael@mirwin.net>)
 
 Author:: Conrad Kramer (<conrad@kramerapps.com>)
 
-Copyright 2013, Kramer Software Productions, LLC.
+Author:: Jake Plimack (<jake.plimack@gmail.com>)
+
+
+Copyright 2013, Kramer Software Productions, LLC.
+
+Copyright 2014, Jake Plimack Photography, LLC.
+
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
