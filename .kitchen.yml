@@ -13,5 +13,5 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[application_nodejs::default]
+      - recipe[test::default]
     attributes:

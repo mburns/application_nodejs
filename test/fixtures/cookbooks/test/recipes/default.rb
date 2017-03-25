@@ -11,9 +11,9 @@ application 'hello-world' do
   group 'www-data'
   packages ['git']
 
-  repository 'git://github.com/visionmedia/express.git'
+  repository 'https://github.com/strongloop/express'
 
-  nodejs do
+  nodejs 'hello-world' do
     entry_point 'examples/hello-world'
   end
 end
