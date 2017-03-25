@@ -49,6 +49,7 @@ action :before_migrate do
     user new_resource.owner
     group new_resource.group
     not_if { new_resource.npm.nil? }
+    environment new_resource.environment.merge('HOME' => new_resource.shared_path)
   end
   new_resource.updated_by_last_action(true)
 end
